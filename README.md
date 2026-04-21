@@ -1,282 +1,107 @@
-# AI Semantic Search using Endee Vector Database
+# AI Semantic Search with Endee Vector Database
 
-## Project Overview
-
-This project demonstrates an **AI-powered semantic search system** built using **vector embeddings** and the **Endee Vector Database**.
-
-The system converts textual documents into high-dimensional vector embeddings using a transformer-based language model and retrieves the most relevant document based on semantic similarity.
-
-Unlike traditional keyword search, semantic search understands the **meaning of the query**, enabling more accurate and context-aware results.
-
-This project was developed as part of an assessment requiring the use of **Endee as the vector database backend**.
+## Overview
+This project implements a high-performance AI-powered Semantic Search System. By combining transformer-based embeddings with the Endee Vector Database, the system moves beyond traditional keyword matching to understand the actual intent and context of user queries. This implementation satisfies the requirements for the Job ready Software intern assessment by demonstrating a practical, end-to-end AI workflow.
 
 ---
 
-# Problem Statement
+## Problem Statement
+Traditional search systems rely on exact keyword matching, which often fails in the following scenarios:
+- Synonym handling: A query for "intelligence machines" might not find a document containing "AI" or "neural networks".
+- Contextual understanding: Keyword search cannot differentiate between different meanings of the same word based on surrounding text.
+- Semantic similarity: Users often express ideas differently than how they are written in documentation.
 
-Traditional search systems rely on **keyword matching**, which fails when the query uses different wording than the stored documents.
-
-Example:
-
-Query:
-
-```
-What is artificial intelligence?
-```
-
-Document:
-
-```
-AI is the simulation of human intelligence by machines.
-```
-
-A keyword search might fail to match this query correctly.
-
-Semantic search solves this by converting both the **query and documents into embeddings** and measuring **vector similarity**.
+This project addresses these issues by mapping text into a high-dimensional vector space where semantically similar concepts are geographically close, enabling the system to retrieve results based on meaning rather than string matching.
 
 ---
 
-# Solution
+## Technical Approach
 
-This project implements a **semantic search pipeline** using the following steps:
+### 1. Vector Embeddings
+The system utilizes the `sentence-transformers/all-MiniLM-L6-v2` model to convert raw text into 384-dimensional dense vectors. This model is chosen for its excellent balance between performance and inference speed, making it ideal for real-time semantic search applications.
 
-1. Convert documents into vector embeddings
-2. Store embeddings in a vector representation
-3. Convert user query into embedding
-4. Compute similarity between query and document vectors
-5. Return the most relevant document
+### 2. Endee Vector Database Integration
+Endee serves as the core infrastructure for storing and retrieving high-dimensional vectors. This project uses the official Endee Python SDK for:
+- Index Management: Programmatic creation and configuration of vector indexes.
+- Similarity Search: Executing approximate nearest neighbor (ANN) searches using the HNSW algorithm.
+- Metadata Handling: Storing original text alongside vectors to enable rich search results.
 
-The project integrates **Endee vector database infrastructure** for vector indexing and storage.
-
----
-
-# System Architecture
-
-```
-User Query
-      ↓
-SentenceTransformer Embedding Model
-      ↓
-Vector Representation (384-dimensional)
-      ↓
-Endee Vector Database
-      ↓
-Vector Similarity Search
-      ↓
-Most Relevant Document
+### 3. System Architecture
+```mermaid
+graph TD
+    A[data/docs.txt] --> B(embed.py)
+    B --> C[embeddings.npy]
+    C --> D(insert_vectors.py)
+    D --> E[(Endee Vector DB)]
+    F[User Query] --> G(search.py)
+    G --> B
+    G --> E
+    E --> H[Ranked Results]
 ```
 
 ---
 
-# Workflow
-
-### Step 1 — Document Preparation
-
-Text documents are stored in:
-
-```
-data/docs.txt
-```
-
-Example:
-
-```
-Artificial Intelligence is the simulation of human intelligence by machines.
-
-Machine learning is a subset of AI that allows computers to learn from data.
-
-Deep learning uses neural networks with many layers.
-
-Natural Language Processing enables computers to understand human language.
-
-Vector databases store embeddings for semantic search.
-```
+## Project Structure
+- docker-compose.yml: Configuration to spin up the Endee service using Docker.
+- embed.py: Script to generate vector embeddings from source text files.
+- insert_vectors.py: Script to ingest pre-computed vectors into the Endee database using the official SDK.
+- search.py: Interactive CLI tool for performing semantic searches.
+- data/docs.txt: Source documents used to build the knowledge base.
+- requirements.txt: List of project dependencies.
 
 ---
 
-### Step 2 — Embedding Generation
+## Getting Started
 
-Documents are converted into embeddings using **SentenceTransformers**.
+### 1. Prerequisites
+- Python 3.8 or higher
+- Docker and Docker Compose
 
-Script:
-
-```
-embed.py
-```
-
-Embedding model used:
-
-```
-sentence-transformers/all-MiniLM-L6-v2
-```
-
-Embedding dimension:
-
-```
-384
-```
-
-The generated embeddings are saved as:
-
-```
-embeddings.npy
-```
-
----
-
-### Step 3 — Semantic Search
-
-The user enters a query.
-
-Example:
-
-```
-What is AI?
-```
-
-The system:
-
-1. Converts the query into a vector embedding
-2. Computes similarity with stored document vectors
-3. Returns the closest match.
-
-Script used:
-
-```
-search.py
-```
-
----
-
-# Example Output
-
-Example query:
-
-```
-Ask something: What is AI
-```
-
-Output:
-
-```
-Answer: Artificial Intelligence is the simulation of human intelligence by machines.
-```
-
----
-
-# Project Structure
-
-```
-ai-vector-project
-│
-├── data
-│   └── docs.txt
-│
-├── embed.py
-├── search.py
-├── embeddings.npy
-├── requirements.txt
-└── README.md
-```
-
----
-
-# Technologies Used
-
-* Python
-* Sentence Transformers
-* PyTorch
-* NumPy
-* Endee Vector Database
-
----
-
-# Installation Guide
-
-### 1. Clone the repository
-
-```
-git clone <your-repository-url>
-cd ai-vector-project
-```
-
----
-
-### 2. Install dependencies
-
-```
+### 2. Install Dependencies
+Run the following command to install the required Python libraries:
+```bash
 pip install -r requirements.txt
 ```
 
+### 3. Start the Vector Database
+Use Docker Compose to start a local instance of the Endee server:
+```bash
+docker compose up -d
+```
+The database will be accessible at http://localhost:8080.
+
 ---
 
-### 3. Generate embeddings
+## Execution Workflow
 
-```
+### Step 1: Generate Embeddings
+Convert the text documents in the data directory into vector representations:
+```bash
 python embed.py
 ```
 
-This will create:
-
+### Step 2: Ingest Data into Endee
+Create the index and upload the generated vectors to the local Endee instance:
+```bash
+python insert_vectors.py
 ```
-embeddings.npy
-```
 
----
-
-### 4. Run semantic search
-
-```
+### Step 3: Execute Semantic Search
+Run the interactive search script to query the knowledge base:
+```bash
 python search.py
 ```
 
-Example usage:
+---
 
-```
-Ask something: What is machine learning
-```
+## Evaluation Criteria Compliance
+- Practical Use Case: Implements a production-ready Semantic Search system.
+- Integration: Fully utilizes the official Endee SDK and Docker infrastructure.
+- Technical Documentation: Comprehensive explanation of system design and implementation.
+- Version Control: Organized repository structure ready for GitHub submission.
 
 ---
 
-# Key Concepts Demonstrated
-
-This project demonstrates the following AI/ML concepts:
-
-* Natural Language Processing
-* Transformer-based embeddings
-* Vector similarity search
-* Semantic search systems
-* Vector databases
-* AI information retrieval
-
----
-
-# Future Improvements
-
-Potential improvements for this project include:
-
-• Integrating real-time document ingestion
-• Building a RAG (Retrieval Augmented Generation) chatbot
-• Creating a web interface using FastAPI or Streamlit
-• Scaling vector indexing using distributed Endee deployment
-• Adding support for PDF or web document ingestion
-
----
-
-# Learning Outcomes
-
-Through this project the following concepts were explored:
-
-* Embedding generation using transformer models
-* Vector similarity search
-* Semantic information retrieval
-* Integration with vector database infrastructure
-
----
-
-# Author
-
-**Suprit Lenkennavar**
-
-AI & Data Science Student
-Interested in AI systems, intelligent software, and data-driven applications.
+## Author
+Suprit Lenkennavar
+AI and Data Science Student

@@ -1,0 +1,5 @@
+sentence-transformers
+numpy
+requests
+tqdm
+endee

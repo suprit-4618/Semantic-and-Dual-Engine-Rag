@@ -1,28 +1,65 @@
 from sentence_transformers import SentenceTransformer
-import numpy as np
+from endee import Endee
+import os
 
-model = SentenceTransformer("all-MiniLM-L6-v2")
+# Configuration
+BASE_URL = "http://localhost:8080"
+COLLECTION_NAME = "test_collection"
+MODEL_NAME = "all-MiniLM-L6-v2"
 
-docs = open("data/docs.txt").read().split("\n")
-docs = [d for d in docs if d.strip()]
+print(f"Loading embedding model ({MODEL_NAME})...")
+model = SentenceTransformer(MODEL_NAME)
 
-embeddings = np.load("embeddings.npy")
+def search_endee(query):
+    try:
+        # 1. Initialize Endee Client
+        client = Endee()
+        # The server requires the /api/v1 prefix
+        client.set_base_url(f"{BASE_URL}/api/v1")
+        
+        # 2. Get the index
+        idx = client.get_index(COLLECTION_NAME)
 
-def search(query):
+        # 3. Convert query to vector
+        query_vector = model.encode([query])[0].tolist()
 
-    query_embedding = model.encode([query])[0]
+        # 4. Query Endee Vector Database
+        results = idx.query(
+            vector=query_vector,
+            top_k=1
+        )
 
-    scores = np.dot(embeddings, query_embedding)
+        if results and len(results) > 0:
+            best_match = results[0]
+            # Endee SDK returns 'meta' and 'similarity' (or 'score')
+            text = best_match.get("meta", {}).get("text", "No text metadata found")
+            score = best_match.get("similarity", 0.0)
+            return text, score
+        else:
+            return "No relevant documents found.", 0.0
 
-    best_index = scores.argmax()
+    except Exception as e:
+        return f"Error connecting to Endee: {e}", 0.0
 
-    return docs[best_index]
+def main():
+    print("\n--- AI Semantic Search (Endee Powered) ---")
+    print("Type 'exit' or 'quit' to stop.\n")
 
+    while True:
+        query = input("Enter your search query: ")
+        
+        if query.lower() in ['exit', 'quit']:
+            break
+        
+        if not query.strip():
+            continue
 
-while True:
+        result, score = search_endee(query)
+        
+        print("-" * 30)
+        print(f"Result: {result}")
+        print(f"Confidence Score: {score:.4f}")
+        print("-" * 30 + "\n")
 
-    q = input("\nAsk something: ")
-
-    result = search(q)
-
-    print("Answer:", result)
+if __name__ == "__main__":
+    main()

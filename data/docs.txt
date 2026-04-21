@@ -7,3 +7,5 @@ Deep learning uses neural networks with multiple layers.
 Natural Language Processing enables computers to understand human language.
 
 Vector databases store embeddings for semantic search and similarity queries.
+
+The internship assessment requries a professional README without any emojis.
