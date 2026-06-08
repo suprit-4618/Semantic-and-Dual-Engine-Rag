@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semantic Search</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="background-effects">
+        <div class="glow glow-1"></div>
+        <div class="glow glow-2"></div>
+    </div>
+    <div class="layout-wrapper">
+        <aside class="sidebar" id="sidebar">
+            <button id="sidebarToggle" class="sidebar-tab">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; width: 100%;">
+                <h2 style="margin-bottom: 0;">Project Info</h2>
+            </div>
+            
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <span>Corpus Data</span>
+                    <span class="icon">▼</span>
+                </button>
+                <div class="accordion-content">
+                    <div id="docsContainer" class="docs-container">
+                        <!-- Source docs injected here -->
+                        <div class="spinner small"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <span>Embedding Details</span>
+                    <span class="icon">▼</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="details-card">
+                        <p><strong>Model:</strong> all-MiniLM-L6-v2</p>
+                        <p><strong>Database:</strong> ChromaDB</p>
+                        <p><strong>Description:</strong> The corpus is converted into 384-dimensional dense vectors using SentenceTransformers. ChromaDB is used to store these embeddings and perform rapid semantic similarity searches using cosine distance.</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        
+        <main class="container">
+            <header>
+                <h1>Semantic Search</h1>
+            </header>
+            
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Enter your search query..." autocomplete="off">
+                <button id="searchButton">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <div id="loader" class="loader hidden">
+                <div class="spinner"></div>
+                <p>Synthesizing answer...</p>
+            </div>
+
+            <div id="resultsContainer" class="results-container">
+                <!-- Results will be injected here -->
+            </div>
+
+            <div id="aiAnswerContainer" class="ai-answer-container hidden">
+                <!-- AI Answer will be injected here -->
+            </div>
+            
+            <div id="generalAnswerContainer" class="ai-answer-container general hidden">
+                <!-- General Answer will be injected here -->
+            </div>
+        </main>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
