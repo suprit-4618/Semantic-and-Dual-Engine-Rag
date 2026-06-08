@@ -26,6 +26,18 @@ Designed with a premium SaaS-style user interface, the system showcases robust b
 
 ---
 
+## UI Showcase
+
+<div align="center">
+  <img src="assets/search-results.png" alt="Search Results" width="800"/>
+  <p><em>The 3-Tier Book-Style Results Layout (Semantic Source + RAG + General AI)</em></p>
+
+  <img src="assets/sidebar-expanded.png" alt="Sidebar Expanded" width="800"/>
+  <p><em>Retractable Sidebar with Independent Accordion Project Metadata</em></p>
+</div>
+
+---
+
 ## Architecture Flow
 
 ```mermaid
