@@ -1,4 +1,10 @@
-
+---
+title: Semantic RAG Engine
+colorFrom: blue
+colorTo: purple
+sdk: docker
+pinned: false
+---
 # Semantic RAG Engine
 
 ## Overview
