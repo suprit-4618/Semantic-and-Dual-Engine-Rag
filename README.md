@@ -1,3 +1,11 @@
+---
+title: Semantic RAG Engine
+emoji: 🚀
+colorFrom: blue
+colorTo: purple
+sdk: docker
+pinned: false
+---
 # Dual-Engine RAG & Semantic Search System
 
 ## Overview
