@@ -14,7 +14,9 @@ model = SentenceTransformer(MODEL_NAME)
 def search_chroma(query):
     try:
         # 1. Initialize ChromaDB Client
-        client = chromadb.HttpClient(host=BASE_URL, port=PORT)
+        # Connect to Embedded ChromaDB
+        print("Connecting to local ChromaDB...")
+        client = chromadb.PersistentClient(path="./chroma_db")
         
         # 2. Get the collection
         collection = client.get_collection(name=COLLECTION_NAME)

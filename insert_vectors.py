@@ -30,8 +30,9 @@ def insert_vectors():
     print(f"Connecting to ChromaDB at {BASE_URL}:{PORT}...")
     
     try:
-        # 1. Initialize ChromaDB Client
-        client = chromadb.HttpClient(host=BASE_URL, port=PORT)
+        # 1. Connect to Embedded ChromaDB
+        print("Connecting to local ChromaDB...")
+        client = chromadb.PersistentClient(path="./chroma_db")
         
         # 2. Ensure index exists
         dimension = embeddings.shape[1]

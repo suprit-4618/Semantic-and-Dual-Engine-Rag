@@ -41,7 +41,8 @@ def search(payload: SearchQuery):
         # Encode Query
         query_vector = model.encode([payload.query])[0].tolist()
         
-        client = chromadb.HttpClient(host=BASE_URL, port=PORT)
+        # Initialize Persistent ChromaDB Client
+        client = chromadb.PersistentClient(path="./chroma_db")
         collection = client.get_collection(name=COLLECTION_NAME)
         
         results_db = collection.query(
