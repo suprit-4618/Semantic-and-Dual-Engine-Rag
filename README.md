@@ -1,12 +1,11 @@
 ---
 title: Semantic RAG Engine
-emoji: 🚀
 colorFrom: blue
 colorTo: purple
 sdk: docker
 pinned: false
 ---
-# Dual-Engine RAG & Semantic Search System
+# Semantic RAG Engine
 
 ## Overview
 This project is an advanced **Dual-Engine Retrieval-Augmented Generation (RAG) System**. It goes beyond traditional keyword search by combining dense vector embeddings with ultra-fast LLM inference to provide three simultaneous layers of information:
