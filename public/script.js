@@ -146,19 +146,12 @@ document.querySelectorAll('.accordion-header').forEach(button => {
         const content = button.nextElementSibling;
         const icon = button.querySelector('.icon');
         
-        // Is this one already open?
-        const isOpen = content.style.maxHeight;
-        
-        // Close all
-        document.querySelectorAll('.accordion-content').forEach(c => {
-            c.style.maxHeight = null;
-        });
-        document.querySelectorAll('.accordion-header .icon').forEach(i => {
-            i.textContent = '▼';
-        });
-
-        // Open this one if it wasn't open
-        if (!isOpen) {
+        if (content.style.maxHeight) {
+            // Close it
+            content.style.maxHeight = null;
+            icon.textContent = '▼';
+        } else {
+            // Open it
             content.style.maxHeight = content.scrollHeight + "px";
             icon.textContent = '▲';
         }
