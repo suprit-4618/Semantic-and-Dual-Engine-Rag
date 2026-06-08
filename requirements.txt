@@ -2,6 +2,7 @@ sentence-transformers
 numpy
 requests
 tqdm
-endee
-streamlit
+chromadb
+fastapi
+uvicorn
 torchvision

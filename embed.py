@@ -17,4 +17,4 @@ embeddings = model.encode(docs)
 # Save embeddings
 np.save("embeddings.npy", embeddings)
 
-print("Embeddings generated successfully!")
+print("Embeddings generated successfully! Ready for ChromaDB.")

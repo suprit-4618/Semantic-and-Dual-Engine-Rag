@@ -1,11 +1,11 @@
-Artificial Intelligence is the simulation of human intelligence by machines.
+The James Webb Space Telescope is the largest optical telescope in space and can view objects too old, distant, or faint for the Hubble Space Telescope.
 
-Machine learning is a subset of AI that allows computers to learn from data.
+A black hole is a region of spacetime where gravity is so strong that nothing, not even light, can escape.
 
-Deep learning uses neural networks with multiple layers.
+The Perseverance rover landed on Mars in 2021 to search for signs of ancient microbial life and collect rock and soil samples.
 
-Natural Language Processing enables computers to understand human language.
+The Milky Way is a barred spiral galaxy that contains our Solar System and is estimated to contain 100 to 400 billion stars.
 
-Vector databases store embeddings for semantic search and similarity queries.
+Neutron stars are the collapsed cores of massive supergiant stars and are the smallest and densest currently known stellar objects.
 
-The internship assessment requries a professional README without any emojis.
+The Apollo 11 mission was the spaceflight that first landed humans on the Moon on July 20, 1969.

@@ -1,48 +1,47 @@
 from sentence_transformers import SentenceTransformer
-from endee import Endee
+import chromadb
 import os
 
 # Configuration
-BASE_URL = "http://localhost:8080"
+BASE_URL = "localhost"
+PORT = 8000
 COLLECTION_NAME = "test_collection"
 MODEL_NAME = "all-MiniLM-L6-v2"
 
 print(f"Loading embedding model ({MODEL_NAME})...")
 model = SentenceTransformer(MODEL_NAME)
 
-def search_endee(query):
+def search_chroma(query):
     try:
-        # 1. Initialize Endee Client
-        client = Endee()
-        # The server requires the /api/v1 prefix
-        client.set_base_url(f"{BASE_URL}/api/v1")
+        # 1. Initialize ChromaDB Client
+        client = chromadb.HttpClient(host=BASE_URL, port=PORT)
         
-        # 2. Get the index
-        idx = client.get_index(COLLECTION_NAME)
+        # 2. Get the collection
+        collection = client.get_collection(name=COLLECTION_NAME)
 
         # 3. Convert query to vector
         query_vector = model.encode([query])[0].tolist()
 
-        # 4. Query Endee Vector Database
-        results = idx.query(
-            vector=query_vector,
-            top_k=1
+        # 4. Query Chroma Database
+        results = collection.query(
+            query_embeddings=[query_vector],
+            n_results=1
         )
 
-        if results and len(results) > 0:
-            best_match = results[0]
-            # Endee SDK returns 'meta' and 'similarity' (or 'score')
-            text = best_match.get("meta", {}).get("text", "No text metadata found")
-            score = best_match.get("similarity", 0.0)
-            return text, score
+        if results['documents'] and len(results['documents'][0]) > 0:
+            best_match_text = results['documents'][0][0]
+            # Chroma with cosine space returns distance. Similarity is 1 - distance.
+            distance = results['distances'][0][0]
+            score = 1.0 - distance
+            return best_match_text, score
         else:
             return "No relevant documents found.", 0.0
 
     except Exception as e:
-        return f"Error connecting to Endee: {e}", 0.0
+        return f"Error connecting to ChromaDB: {e}", 0.0
 
 def main():
-    print("\n--- AI Semantic Search (Endee Powered) ---")
+    print("\n--- AI Semantic Search (ChromaDB Powered) ---")
     print("Type 'exit' or 'quit' to stop.\n")
 
     while True:
@@ -54,7 +53,7 @@ def main():
         if not query.strip():
             continue
 
-        result, score = search_endee(query)
+        result, score = search_chroma(query)
         
         print("-" * 30)
         print(f"Result: {result}")

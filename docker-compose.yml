@@ -1,13 +1,13 @@
 version: '3.8'
 
 services:
-  endee:
-    image: endeeio/endee-server:latest
+  chromadb:
+    image: chromadb/chroma:latest
     ports:
-      - "8080:8080"
+      - "8000:8000"
     volumes:
-      - endee_data:/data
+      - chroma_data:/chroma/chroma
     restart: unless-stopped
 
 volumes:
-  endee_data:
+  chroma_data:
