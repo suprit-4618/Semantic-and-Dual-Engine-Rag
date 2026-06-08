@@ -111,4 +111,4 @@ Open your browser and navigate to `http://localhost:8500`.
 
 ## Author
 **Suprit Lenkennavar**
-AI and Data Science Student
+AI and Data Science Engineer
