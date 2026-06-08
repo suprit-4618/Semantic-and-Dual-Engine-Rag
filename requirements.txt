@@ -6,3 +6,4 @@ chromadb
 fastapi
 uvicorn
 torchvision
+python-dotenv

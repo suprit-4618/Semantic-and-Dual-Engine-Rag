@@ -155,3 +155,4 @@ cython_debug/
 
 # Project specific
 embeddings.npy
+.env

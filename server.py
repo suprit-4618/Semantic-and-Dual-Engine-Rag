@@ -6,6 +6,9 @@ from sentence_transformers import SentenceTransformer
 import chromadb
 import os
 import requests
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = FastAPI(title="AI Semantic Search API")
 
