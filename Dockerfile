@@ -1,13 +1,24 @@
 FROM python:3.10-slim
 
-WORKDIR /app
+# Create user with ID 1000 (required by Hugging Face Spaces)
+RUN useradd -m -u 1000 user
 
-# Install dependencies
-COPY requirements.txt .
+# Switch to non-root user
+USER user
+
+# Set home and paths
+ENV HOME=/home/user \
+    PATH=/home/user/.local/bin:$PATH
+
+# Set working directory to user home
+WORKDIR $HOME/app
+
+# Copy requirements and install (chown to user)
+COPY --chown=user requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy source code
-COPY . .
+# Copy source code (chown to user)
+COPY --chown=user . .
 
 # Generate Embeddings and build the embedded ChromaDB index during the Docker build
 RUN python embed.py
